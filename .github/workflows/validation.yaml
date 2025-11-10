@@ -1,0 +1,29 @@
+name: OpenAPI Validation
+
+on:
+  push:
+    paths:
+      - 'article.yaml'
+  pull_request:
+    paths:
+      - 'article.yaml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '14'
+
+      - name: Install OpenAPI validator
+        run: npm install -g @apidevtools/swagger-cli
+
+      - name: Validate OpenAPI specification
+        run: swagger-cli validate openapi.yaml
