@@ -1,0 +1,9 @@
+summary: 예시 게시글
+value:
+  id: 1234567890
+  boardId: 1
+  writerId: 42
+  title: Sample title
+  content: This is a sample content.
+  createdAt: '2025-01-01T12:00:00Z'
+  updatedAt: '2025-01-01T12:00:00Z'

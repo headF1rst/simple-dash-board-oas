@@ -1,0 +1,22 @@
+type: object
+properties:
+  title:
+    type: string
+    minLength: 1
+    maxLength: 255
+    description: Article title
+  content:
+    type: string
+    minLength: 1
+    description: Article content
+  writerId:
+    type: integer
+    format: int64
+    description: Writer/User ID
+  boardId:
+    type: integer
+    format: int64
+    description: Board ID
+required:
+  - title
+  - content

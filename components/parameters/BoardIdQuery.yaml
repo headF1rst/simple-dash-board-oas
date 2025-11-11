@@ -1,0 +1,7 @@
+name: boardId
+in: query
+description: Filter by board ID
+required: false
+schema:
+  type: integer
+  format: int64

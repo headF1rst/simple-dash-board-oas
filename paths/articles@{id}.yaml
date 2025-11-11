@@ -1,0 +1,57 @@
+# GET/PUT/DELETE /v1/articles/{id}
+parameters:
+  - name: id
+    in: path
+    required: true
+    description: 게시글 ID
+    schema:
+      type: integer
+      format: int64
+    example: 123
+
+get:
+  summary: 게시글 상세 조회
+  operationId: getArticleById
+  tags:
+    - Article
+  responses:
+    '200':
+      description: 조회 성공
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/ArticleResponse.yaml'
+    '404':
+      $ref: '../components/responses/404NotFound.yaml'
+
+put:
+  summary: 게시글 수정
+  operationId: updateArticle
+  tags:
+    - Article
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/ArticleUpdateRequest.yaml'
+  responses:
+    '200':
+      description: 수정 성공
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/ArticleResponse.yaml'
+    '404':
+      $ref: '../components/responses/404NotFound.yaml'
+
+delete:
+  summary: 게시글 삭제
+  operationId: deleteArticle
+  tags:
+    - Article
+  responses:
+    '204':
+      description: 삭제 성공
+    '404':
+      $ref: '../components/responses/404NotFound.yaml'

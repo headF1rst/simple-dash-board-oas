@@ -1,0 +1,45 @@
+# GET/POST /v1/articles
+get:
+  summary: 게시글 목록 조회
+  description: 게시글 목록을 조회합니다. 페이징을 지원합니다.
+  operationId: listArticles
+  tags:
+    - Article
+  parameters:
+    - $ref: '../components/parameters/BoardIdQuery.yaml'
+    - $ref: '../components/parameters/WriterIdQuery.yaml'
+    - $ref: '../components/parameters/PageQuery.yaml'
+    - $ref: '../components/parameters/SizeQuery.yaml'
+    - $ref: '../components/parameters/SortQuery.yaml'
+  responses:
+    '200':
+      description: 조회 성공
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/ArticleListResponse.yaml'
+    '400':
+      $ref: '../components/responses/400BadRequest.yaml'
+    '500':
+      $ref: '../components/responses/500ServerError.yaml'
+
+post:
+  summary: 새로운 게시글 생성
+  operationId: createArticle
+  tags:
+    - Article
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/ArticleCreateRequest.yaml'
+  responses:
+    '201':
+      description: 생성 성공
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/ArticleResponse.yaml'
+    '400':
+      $ref: '../components/responses/400BadRequest.yaml'

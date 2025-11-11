@@ -1,0 +1,7 @@
+name: writerId
+in: query
+description: Filter by writer (user) ID
+required: false
+schema:
+  type: integer
+  format: int64

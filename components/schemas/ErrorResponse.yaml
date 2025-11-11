@@ -1,0 +1,30 @@
+type: object
+properties:
+  timestamp:
+    type: string
+    format: date-time
+  status:
+    type: integer
+    format: int32
+    description: HTTP status code
+    example: 400
+  error:
+    type: string
+    description: Error short message
+    example: Bad Request
+  code:
+    type: string
+    description: Application specific error code
+    example: VALIDATION_ERROR
+  message:
+    type: string
+    description: Detailed error message
+    example: One or more fields are invalid.
+  path:
+    type: string
+    description: Request path
+    example: /v1/articles
+required:
+  - status
+  - error
+  - message

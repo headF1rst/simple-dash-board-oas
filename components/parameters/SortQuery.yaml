@@ -1,0 +1,7 @@
+name: sort
+in: query
+description: Sort criteria in the format property,(asc|desc). Multiple sort criteria are supported.
+required: false
+schema:
+  type: string
+  example: createdAt,desc

@@ -1,0 +1,40 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    description: Article ID
+    example: 1234567890
+  boardId:
+    type: integer
+    format: int64
+    description: Board ID the article belongs to
+    example: 1
+  writerId:
+    type: integer
+    format: int64
+    description: Writer/User ID
+    example: 42
+  title:
+    type: string
+    description: Article title
+    example: Sample title
+  content:
+    type: string
+    description: Article content
+    example: This is a sample content.
+  createdAt:
+    type: string
+    format: date-time
+    description: Creation timestamp
+  updatedAt:
+    type: string
+    format: date-time
+    description: Last update timestamp
+required:
+  - id
+  - boardId
+  - writerId
+  - title
+  - content
+  - createdAt

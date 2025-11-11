@@ -1,0 +1,23 @@
+openapi: 3.0.0
+info:
+  title: Simple Dashboard API
+  description: 게시판 서비스 API
+  version: 1.0.0
+servers:
+  - url: 'https://api.simpledashboard.com'
+    description: Production server
+  - url: 'http://localhost:8080'
+    description: Local development server
+
+paths:
+  /v1/articles:
+    $ref: './paths/articles.yaml'
+  /v1/articles/{id}:
+    $ref: './paths/articles@{id}.yaml'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

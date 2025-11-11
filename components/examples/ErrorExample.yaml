@@ -1,0 +1,8 @@
+summary: 예시 에러 응답
+value:
+  timestamp: '2025-01-01T12:00:00Z'
+  status: 400
+  error: Bad Request
+  code: VALIDATION_ERROR
+  message: One or more fields are invalid.
+  path: /v1/articles

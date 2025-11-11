@@ -1,0 +1,35 @@
+type: object
+properties:
+  page:
+    type: integer
+    format: int32
+    minimum: 0
+    description: Current page number (0-based)
+    example: 0
+  size:
+    type: integer
+    format: int32
+    minimum: 1
+    description: Page size
+    example: 20
+  totalElements:
+    type: integer
+    format: int64
+    minimum: 0
+    description: Total number of elements
+    example: 125
+  totalPages:
+    type: integer
+    format: int32
+    minimum: 0
+    description: Total number of pages
+    example: 7
+  sort:
+    type: string
+    description: Sort criteria in the format property,(asc|desc)
+    example: createdAt,desc
+required:
+  - page
+  - size
+  - totalElements
+  - totalPages

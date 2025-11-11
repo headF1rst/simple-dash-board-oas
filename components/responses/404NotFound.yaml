@@ -1,0 +1,8 @@
+description: 리소스를 찾을 수 없음
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ErrorResponse.yaml'
+    examples:
+      error:
+        $ref: '../examples/ErrorExample.yaml'

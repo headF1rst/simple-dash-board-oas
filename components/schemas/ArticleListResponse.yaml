@@ -1,0 +1,12 @@
+type: object
+properties:
+  items:
+    type: array
+    description: List of articles
+    items:
+      $ref: './Article.yaml'
+  pagination:
+    $ref: './Pagination.yaml'
+required:
+  - items
+  - pagination

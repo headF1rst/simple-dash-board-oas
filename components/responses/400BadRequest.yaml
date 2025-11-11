@@ -1,0 +1,8 @@
+description: 잘못된 요청
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ErrorResponse.yaml'
+    examples:
+      error:
+        $ref: '../examples/ErrorExample.yaml'

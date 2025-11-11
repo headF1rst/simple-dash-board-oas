@@ -3,10 +3,10 @@ name: OpenAPI Validation
 on:
   push:
     paths:
-      - 'article.yaml'
+      - 'contract/**'
   pull_request:
     paths:
-      - 'article.yaml'
+      - 'contract/**'
 
 jobs:
   validate:
@@ -20,10 +20,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: '20'
 
-      - name: Install OpenAPI validator
-        run: npm install -g @apidevtools/swagger-cli
-
-      - name: Validate OpenAPI specification
-        run: swagger-cli validate openapi.yaml
+      - name: Validate OpenAPI specification (Redocly)
+        run: npx --yes @redocly/cli lint contract/openapi.yaml
