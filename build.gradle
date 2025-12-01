@@ -1,0 +1,110 @@
+apply plugin: 'org.openapi.generator'
+
+openApiGenerate {
+    generatorName = 'spring'
+    
+    // 입력 스펙 경로 (번들링된 파일 사용)
+    inputSpec = layout.buildDirectory.file("openapi.bundle.yaml").get().asFile.absolutePath
+    
+    // 출력 경로
+    outputDir = layout.buildDirectory.dir("generated/openapi").get().asFile.absolutePath
+    
+    // 커스텀 Mustache 템플릿 디렉터리
+    templateDir = "$projectDir/openapi-templates/spring"
+    
+    // 패키지 설정
+    apiPackage = 'simple.board.contract.api'
+    modelPackage = 'simple.board.contract.model'
+    
+    // API/Model 파일만 생성 (supporting 파일 제외)
+    globalProperties = [
+        apis           : '',
+        models         : '',
+        supportingFiles: ''
+    ]
+    
+    // 코드 생성 옵션
+    configOptions = [
+        interfaceOnly          : 'true',   // 인터페이스만 생성 (구현체 X)
+        useTags                : 'true',   // 태그 기반 API 분리
+        addGeneratedAnnotation : 'false',  // @Generated 어노테이션 제거
+        dateLibrary            : 'java8',  // java.time.* 사용
+        serializableModel      : 'true',   // 모델 직렬화 가능
+        documentationProvider  : 'none',   // Swagger/SpringDoc 어노테이션 제거
+        useBeanValidation      : 'true',   // Bean Validation 사용
+        useJakartaEe           : 'true',   // Jakarta EE 사용 (javax → jakarta)
+        skipDefaultInterface   : 'true'    // default 메서드 본문 제거
+    ]
+}
+
+// 이 모듈은 라이브러리이므로 bootJar 비활성화
+tasks.named('bootJar') { enabled = false }
+tasks.named('jar') { enabled = true }
+
+// 생성된 소스를 컴파일에 포함
+sourceSets {
+    main {
+        java {
+            srcDir layout.buildDirectory.dir("generated/openapi/src/main/java").get().asFile
+        }
+    }
+}
+
+// 컴파일 전에 코드 생성 실행
+tasks.named('compileJava') {
+    dependsOn tasks.named('openApiGenerate')
+}
+
+// OpenAPI 스펙 번들링 태스크
+// $ref로 분리된 YAML 파일들을 build 디렉터리로 복사하여 참조 해소
+tasks.register('bundleOpenApi') {
+    group = 'openapi'
+    description = 'Prepare OpenAPI spec files for code generation'
+    
+    inputs.file("$projectDir/openapi.yaml")
+    inputs.dir("$projectDir/paths")
+    inputs.dir("$projectDir/components")
+    
+    outputs.file(layout.buildDirectory.file("openapi.bundle.yaml"))
+    outputs.dir(layout.buildDirectory.dir("paths"))
+    outputs.dir(layout.buildDirectory.dir("components"))
+    
+    doLast {
+        copy {
+            from "$projectDir/openapi.yaml"
+            into layout.buildDirectory.get().asFile
+            rename { 'openapi.bundle.yaml' }
+        }
+        if (file("$projectDir/paths").exists()) {
+            copy {
+                from "$projectDir/paths"
+                into layout.buildDirectory.dir("paths").get().asFile
+            }
+        }
+        if (file("$projectDir/components").exists()) {
+            copy {
+                from "$projectDir/components"
+                into layout.buildDirectory.dir("components").get().asFile
+            }
+        }
+    }
+}
+
+// 코드 생성 태스크 설정
+tasks.named('openApiGenerate') {
+    dependsOn tasks.named('bundleOpenApi')
+    
+    // 불필요한 생성 파일 삭제
+    doLast {
+        delete layout.buildDirectory.file("generated/openapi/README.md").get().asFile
+        delete layout.buildDirectory.file("generated/openapi/.openapi-generator").get().asFile
+    }
+}
+
+dependencies {
+    // 생성된 코드의 컴파일 의존성 (런타임은 소비 모듈에서 제공)
+    compileOnly 'org.springframework:spring-web'
+    compileOnly 'jakarta.validation:jakarta.validation-api'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'org.openapitools:jackson-databind-nullable:0.2.6'
+}
